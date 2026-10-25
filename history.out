@@ -1,0 +1,154 @@
+   53  nmcli device status
+   54  nmcli connection show
+   56  sudo nmcli connection modify ens33 ipv4.method auto
+   57  nmcli -f ipv4.method connection show ens33
+   58  nmcli -f IP4,DHCP4 device show ens33
+   59  nmcli -f connection.autoconnect connection show ens33
+   60  sudo hostnamectl set-hostname mephi-2026.domain.local
+   61  hostnamectl
+   62  ping -c 4 8.8.8.8 > ~/ping.out
+   63  cat ~/ping.out
+   64  sudo dnf upgrade -y
+   65  sudo dnf install nginx libcap-ng-utils -y
+   66  sudo dnf download --destdir /tmp --resolve tcpdump
+   67  sudo rpm -ivh /tmp/tcpdump-4.99.5-1.red80.x86_64.rpm
+   68  sudo rpm -ivh --replacepkgs /tmp/tcpdump-4.99.5-1.red80.x86_64.rpm
+   69  dnf history > ~/dnf.out
+   70  cat ~/dnf.out
+   71  lsblk
+   72  sudo poweroff
+   73  lsblk
+   74  sudo blkid
+   75  sudo fdisk -l /dev/sdb
+   76  sudo fdisk /dev/sdb
+   77  lsblk
+   78  sudo mkfs.ext4 -L MEPHI_WEB /dev/sdb1
+   79  sudo blkid /dev/sdb1
+   80  sudo mkdir /mephi-web
+   81  ls -l /
+   82  cat /etc/fstab
+   84  sudo nano /etc/fstab
+   85  cat /etc/fstab
+   86  sudo systemctl daemon-reload
+   87  sudo mount /mephi-web
+   88  findmnt --mountpoint /mephi-web/
+   89  systemctl status nginx.service
+   90  sudo systemctl start nginx.service
+   91  sudo systemctl enable nginx.service
+   92  systemctl status nginx.service
+   94  journalctl -u nginx.service -b > ~/journalctl.out
+   95  cat ~/journalctl.out
+   96  cat /etc/pam.d/passwd
+   97  cat /etc/security/pwquality.conf
+   98  sudo nano /etc/security/pwquality.conf
+   99  grep -E 'minlen|enforce_for_root' /etc/security/pwquality.conf
+  100  grep '^PASS_' /etc/login.defs
+  101  sudo nano /etc/login.defs
+  102  grep '^PASS_' /etc/login.defs
+  103  passwd dmitri
+  104  passwd
+  106  sudo chage -M 90 dmitri
+  107  sudo chage -l dmitri
+  108  getent group | grep -E '^(curators|developers):'
+  109  sudo groupadd -g 4444 curators
+  110  sudo groupadd developers
+  111  getent group | grep -E '^(curators|developers):'
+  112  getent passwd | grep -E '^(user1|user2|user3|curator1|curator2):'
+  113  getent passwd 5501
+  114  ps -U 1234 -u 1234 -o pid,ruid,euid,comm
+  115  ls -ldn /home/user1
+  116  sudo usermod -u 5501 user1
+  117  id user1
+  118  sudo passwd user1
+  119  sudo chage -M 90 user1
+  120  sudo chage -l user1
+  121  sudo useradd -u 5502 -m -s /bin/bash user2
+  122  sudo passwd user2
+  123  sudo useradd -u 5503 -m -s /bin/bash user3
+  124  sudo passwd user3
+  125  sudo usermod -aG developers user1
+  126  sudo usermod -aG developers user2
+  127  sudo usermod -aG developers user3
+  128  sudo useradd -m -s /bin/bash curator1
+  129  sudo passwd curator1
+  130  sudo useradd -m -s /bin/bash curator2
+  131  sudo passwd curator2
+  132  sudo usermod -aG curators curator1
+  133  sudo usermod -aG curators curator2
+  134  getent group | grep -E '^(curators|developers):'
+  135  getent passwd | grep -E '^(user1|user2|user3|curator1|curator2):'
+  136  sudo mkdir -p /data/mephi-2026
+  137  sudo chown root:developers /data/mephi-2026/
+  138  ls -ld /data/mephi-2026/
+  139  sudo chmod 770 /data/mephi-2026/
+  140  ls -ld /data/mephi-2026/
+  141  sudo chmod g+s /data/mephi-2026/
+  142  ls -ld /data/mephi-2026/
+  143  getfacl /data/mephi-2026/
+  144  sudo setfacl -m g:curators:5 /data/mephi-2026/
+  145  getfacl /data/mephi-2026/
+  146  sudo setfacl -d -m g:curators:5 /data/mephi-2026/
+  147  getfacl /data/mephi-2026/
+  148  getfacl /data/mephi-2026 > /home/dmitri/getfacl.out
+  149  whereis tcpdump
+  150  getcap /usr/sbin/tcpdump
+  151  sudo setcap cap_net_raw=eip /usr/sbin/tcpdump
+  152  getcap /usr/sbin/tcpdump
+  153  ls -l /usr/sbin/tcpdump
+  154  sudo -u user1 tcpdump -nn -c5 2>&1 | tee /home/dmitri/tcpdump-user1.out > /dev/null
+  156  sudo -u user1 tcpdump -nn -c5 2>&1 | tee /home/dmitri/tcpdump-user1.out > /dev/null
+  157  cat /home/dmitri/tcpdump-user1.out
+  158  getcap /usr/sbin/tcpdump > /home/dmitri/getcap.out
+  159  getenforce
+  160  sestatus
+  161  rpm -q policycoreutils-python-utils
+  162  whereis semanage
+  163  rpm -qf /usr/sbin/semanage
+  164  ls -Zd /mephi-web/
+  165  ps -Z -C nginx
+  166  sudo semanage fcontext -a -t httpd_sys_content_t '/mephi-web(/.*)?'
+  167  sudo restorecon -Rv /mephi-web/
+  168  ls -Zd /mephi-web/
+  169  sudo nginx -T
+  170  sudo nano /etc/nginx/nginx.conf
+  171  sudo nginx -T
+  172  sudo nano /etc/nginx/nginx.conf
+  173  sudo nginx -T
+  174  sudo nano /etc/nginx/nginx.conf
+  175  sudo nginx -T
+  176  sudo nginx -t
+  177  sudo systemctl reload nginx.service
+  178  systemctl status nginx.service
+  179  sudo cat /etc/nginx/nginx.conf
+  180  getfacl /data/mephi-2026 > /home/dmitri/getfacl.out
+  181  cat /home/dmitri/getfacl.out
+  182  stat /data/mephi-2026/ /mephi-web/ > /home/dmitri/stat.out
+  183  cat /home/dmitri/stat.out
+  184  rpm -q policycoreutils-python-utils > /home/dmitri/semanage-package.out
+  185  cat /home/dmitri/semanage-package.out
+  186  getenforce > /home/dmitri/getenforce.out
+  187  cat /home/dmitri/getenforce.out
+  188  ls -l /etc/pam.d/
+  189  cat /etc/pam.d/login
+  190  cat /etc/pam.d/system-auth
+  191  sudo nano /etc/security/login-access.conf
+  192  cat /etc/security/login-access.conf
+  193  ls -l /usr/lib64/security/pam_access.so
+  194  sudo nano /etc/pam.d/login
+  195  cat /etc/pam.d/login
+  196  sudo chvt 3
+  197  sudo nano /mephi-web/index.html
+  198  ls -lZ /mephi-web/index.html
+  199  curl -sS http://localhost/ > /home/dmitri/curl.out
+  200  cat /home/dmitri/curl.out
+  201  journalctl -u nginx.service -b > /home/dmitri/journalctl.out
+  202  cat /home/dmitri/journalctl.out
+  203  dnf history > /home/dmitri/dnf.out
+  204  cat /home/dmitri/dnf.out
+  205  cp /etc/fstab /home/dmitri/fstab
+  206  cp /etc/passwd /home/dmitri/passwd
+  207  cp /etc/group /home/dmitri/group
+  208  cp /etc/security/pwquality.conf /home/dmitri/pwquality.conf
+  209  sudo sed 's/:[^:]*:/:REDACTED:/' /etc/shadow > /home/dmitri/shadow
+  210  cat /home/dmitri/shadow
+  211  history > /home/dmitri/history.out
