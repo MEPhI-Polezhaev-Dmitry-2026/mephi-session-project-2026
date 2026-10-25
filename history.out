@@ -152,3 +152,18 @@
   209  sudo sed 's/:[^:]*:/:REDACTED:/' /etc/shadow > /home/dmitri/shadow
   210  cat /home/dmitri/shadow
   211  history > /home/dmitri/history.out
+  212  ls -l /home/dmitri/
+  213  curl -sS http://localhost/
+  214  sudo nano /etc/security/pwquality.conf
+  215  sudo passwd curator1
+  216  sudo passwd user1
+  217  sudo nano /etc/security/pwquality.conf
+  218  grep -E 'minlen|enforce_for_root' /etc/security/pwquality.conf
+  219  sudo chvt 3
+  220  sudo journalctl -b -t login -n 30 --no-pager
+  221  sudo journalctl -b --no-pager -g 'curator1|pam_access'
+  222  sudo grep 'curator1' /var/log/secure
+  223  sudo passwd curator1
+  224  sudo passwd user1
+  225  sudo ls -l /data/mephi-2026/
+  226  history > /home/dmitri/history.out
